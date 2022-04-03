@@ -58,19 +58,13 @@ func SiCepatOngkir() {
 	client := http.Client{}
 	url := "https://content-main-api-production.sicepat.com/public/delivery-fee/fare-non-international"
 	payload := []byte(`{"origin":"PBL","destination":"PBL10014","weight":"1","p":0,"l":0,"t":0}`)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payload))
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
-
-	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	res, err := client.Post(url, "application/json", bytes.NewBuffer(payload))
 	defer res.Body.Close()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
 	body, _ := ioutil.ReadAll(res.Body)
 	err = json.Unmarshal(body, &data)
 	if err != nil {
@@ -91,27 +85,19 @@ func AnterAjaOngkir() {
 	client := http.Client{}
 	url := "https://anteraja.id/api/api/tracking/trackparcel/getRates?origin=35.13.12&destination=32.15.13"
 	payload := []byte(`{"client_code":"ACA","origin":"35.13.12","destination":"32.15.13","weight":1}`)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payload))
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	res, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	res, err := client.Post(url, "application/json", bytes.NewBuffer(payload))
 	defer res.Body.Close()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
 	body, _ := ioutil.ReadAll(res.Body)
 	err = json.Unmarshal(body, &data)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-
-	fmt.Println(data)
 	fmt.Println("=================== ANTERAJA ====================")
 	for _, each := range data.Content.Services {
 		tarif := ""
