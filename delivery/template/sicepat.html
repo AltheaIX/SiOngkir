@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SiOngkir - Sicepat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+================== SICEPAT ================== </br>
+{{range $elem := .Sicepat.Results}}
+Nama Service: {{$elem.Service}}</br>
+Estimasi: {{$elem.Etd}}</br>
+Tarif: {{$elem.Tariff}}</br>
+=============================================
+</br>
+{{end}}
+</body>
+</html>

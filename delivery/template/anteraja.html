@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SiOngkir - AnterAja</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+================== AnterAja ================== </br>
+{{range $elem := .AnterAja.Content.Services}}
+Nama Service: {{$elem.ProductName}}</br>
+Estimasi: {{$elem.Etd}}</br>
+{{if $elem.Enable}}
+Tarif: {{printf "%0.f" $elem.Rates}}</br>
+{{else}}
+Tarif: {{$elem.MsgId}}</br>
+{{end}}
+=============================================
+</br>
+{{end}}
+</body>
+</html>
