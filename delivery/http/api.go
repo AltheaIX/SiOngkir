@@ -10,19 +10,20 @@ import (
 	url2 "net/url"
 )
 
-func SiCepatOngkir(origin string, destination string, weight string) (models.SiCepatRes, error) {
+func SiCepatOngkir(request *models.RequestSiCepat) (models.SiCepatRes, error) {
 	data := models.SiCepatRes{}
 	client := http.Client{}
 	url := "https://content-main-api-production.sicepat.com/public/delivery-fee/fare-non-international"
 
 	payloadMap := map[string]interface{}{
-		"origin":      origin,
-		"destination": destination,
-		"weight":      weight,
+		"origin":      request.Request.Origin,
+		"destination": request.Request.Destination,
+		"weight":      request.Weight,
 		"p":           "0",
 		"l":           "0",
 		"t":           "0",
 	}
+
 	payload, err := json.Marshal(payloadMap)
 	if err != nil {
 		fmt.Println(err)
@@ -38,7 +39,7 @@ func SiCepatOngkir(origin string, destination string, weight string) (models.SiC
 
 	body, _ := ioutil.ReadAll(res.Body)
 	err = json.Unmarshal(body, &data)
-	data.Weight = weight
+	data.Weight = request.Weight
 	if err != nil {
 		fmt.Println(err.Error())
 		return data, err
@@ -46,12 +47,12 @@ func SiCepatOngkir(origin string, destination string, weight string) (models.SiC
 	return data, err
 }
 
-func AnterAjaOngkir(origin string, destination string) (models.AnterAjaRes, error) {
+func AnterAjaOngkir(request *models.Request) (models.AnterAjaRes, error) {
 	data := models.AnterAjaRes{}
 	client := http.Client{}
 	param := url2.Values{}
-	param.Add("origin", origin)
-	param.Add("destination", destination)
+	param.Add("origin", request.Origin)
+	param.Add("destination", request.Destination)
 	url := "https://anteraja.id/api/api/tracking/trackparcel/getRates?" + param.Encode()
 	res, err := client.Post(url, "application/json", nil)
 	defer res.Body.Close()
