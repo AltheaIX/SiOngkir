@@ -1,18 +1,21 @@
 package models
 
-type SicepatRes struct {
-	Status struct {
-		Code        int
-		Description string
+type SiCepatRes struct {
+	SiCepat struct {
+		Status struct {
+			Code        int
+			Description string
+		}
+		Results []struct {
+			Service     string
+			Description string
+			Tariff      int
+			MinPrice    int
+			UnitPrice   int
+			Etd         string
+		}
 	}
-	Results []struct {
-		Service     string
-		Description string
-		Tariff      int
-		MinPrice    int
-		UnitPrice   int
-		Etd         string
-	}
+	Weight interface{}
 }
 
 type AnterAjaRes struct {
@@ -35,4 +38,5 @@ type AnterAjaRes struct {
 			Enable      bool
 		}
 	}
+	Weight interface{}
 }

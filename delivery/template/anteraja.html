@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+{{$weight := .Weight}}
 ================== AnterAja ================== </br>
-{{range $elem := .AnterAja.Content.Services}}
+{{range $elem := .Content.Services}}
 Nama Service: {{$elem.ProductName}}</br>
 Estimasi: {{$elem.Etd}}</br>
 {{if $elem.Enable}}
-Tarif: {{printf "%0.f" $elem.Rates}}</br>
+Tarif: {{printf "%0.f" $elem.Rates}} / {{$weight}} Kg</br>
 {{else}}
 Tarif: {{$elem.MsgId}}</br>
 {{end}}

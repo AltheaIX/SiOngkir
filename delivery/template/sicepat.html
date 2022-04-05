@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
+{{$weight := .Weight}}
 ================== SICEPAT ================== </br>
-{{range $elem := .Sicepat.Results}}
+{{range $elem := .SiCepat.Results}}
 Nama Service: {{$elem.Service}}</br>
 Estimasi: {{$elem.Etd}}</br>
-Tarif: {{$elem.Tariff}}</br>
+Tarif: {{$elem.Tariff}} / {{$weight}} Kg</br>
 =============================================
 </br>
 {{end}}
