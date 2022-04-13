@@ -2,9 +2,10 @@ package delivery
 
 import (
 	api "SiOngkir/delivery/http"
-	"SiOngkir/delivery/http/middleware"
 	"SiOngkir/models"
-	"html/template"
+	"encoding/json"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
 )
 
@@ -23,11 +24,13 @@ func SiCepatHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl := template.Must(template.New("sicepat.html").ParseFiles("delivery/template/sicepat.html"))
-		if err := tmpl.Execute(w, data); err != nil {
+
+		resp, err := json.Marshal(data)
+		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
 		}
+
+		w.Write(resp)
 	}
 }
 
@@ -41,24 +44,29 @@ func AnterAjaHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		tmpl := template.Must(template.New("anteraja.html").ParseFiles("delivery/template/anteraja.html"))
-		if err := tmpl.Execute(w, data); err != nil {
+
+		resp, err := json.Marshal(data)
+		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
 		}
+
+		w.Write(resp)
 	}
 }
 
+func SetContentType(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		middleware.SetHeader("Content-Type", "application/json")
+		next.ServeHTTP(w, r)
+	})
+}
+
 func HandlerRun() {
-	mux := http.DefaultServeMux
-	mux.HandleFunc("/sicepat", SiCepatHandler)
-	mux.HandleFunc("/anteraja", AnterAjaHandler)
-
-	var handler http.Handler = mux
-	handler = middleware.GetOnly(handler)
-
-	server := http.Server{}
-	server.Addr = ":8000"
-	server.Handler = handler
-	server.ListenAndServe()
+	r := chi.NewRouter()
+	r.Route("/api", func(r chi.Router) {
+		r.Use(SetContentType)
+		r.Get("/sicepat", SiCepatHandler)
+		r.Get("/anteraja", AnterAjaHandler)
+	})
+	http.ListenAndServe(":5000", r)
 }
