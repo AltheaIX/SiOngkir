@@ -5,4 +5,4 @@ Supported Couriers:
 - SiCepat
 - AnterAja
 
-Build with Golang (1.18)
+Build with Golang (1.18), Chi (v5)
